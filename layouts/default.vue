@@ -1,13 +1,11 @@
 <template>
-  <Index />
+  <div id="appRoot">
+    <nuxt />
+  </div>
 </template>
 
 <script>
-import Index from '~/pages/index.vue'
-
 export default {
-  components: {
-    Index,
-  },
+  components: {},
 }
 </script>

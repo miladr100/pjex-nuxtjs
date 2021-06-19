@@ -1,5 +1,5 @@
 <template>
-  <v-app v-if="$auth.loggedIn">
+  <v-app>
     <PToolbar />
     <PFooter />
   </v-app>
@@ -13,6 +13,10 @@ export default {
   components: {
     PToolbar,
     PFooter,
+  },
+  middleware: ['auth'],
+  mounted() {
+    console.log(this.$auth.user)
   },
 }
 </script>

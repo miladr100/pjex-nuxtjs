@@ -1,13 +1,10 @@
-export default {
-  state: {
-    users: {
-      name: '',
-      email: '',
-    },
+export const state = () => ({
+  users: {
+    name: '',
+    email: '',
   },
-  actions: {},
-  mutations: {
-    updateUser: (state, payload) => (state.users = payload),
-  },
-  getters: {},
+})
+
+export const mutations = {
+  updateUser: (state, payload) => (state.users = payload),
 }

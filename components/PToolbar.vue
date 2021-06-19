@@ -1,6 +1,18 @@
 <template>
   <v-app>
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
+    <v-navigation-drawer v-model="drawer" fixed :clipped="clipped" app>
+      <v-list>
+        <v-list-item link>
+          <v-list-item-avatar>
+            <img
+              :src="`https://randomuser.me/api/portraits/men/${28}.jpg`"
+              alt=""
+            />
+          </v-list-item-avatar>
+          <v-list-item-title v-text="this.$auth.user.name" />
+        </v-list-item>
+      </v-list>
+      <v-divider></v-divider>
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -23,46 +35,48 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      <v-icon @click="logoutUserAsync()">logout</v-icon>
     </v-app-bar>
-    <v-main>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-main>
-    <PFooter />
   </v-app>
 </template>
 
 <script>
-import PFooter from '~/components/PFooter.vue'
-
 export default {
   name: 'PToolbar',
-  components: {
-    PFooter,
-  },
+  components: {},
   data() {
     return {
+      title: 'Pjex',
       clipped: false,
       drawer: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Início',
-          to: '/',
+          icon: 'home',
+          title: 'DASHBOARD',
+          to: '/dashboard',
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Perfil',
-          to: '/',
+          icon: 'home',
+          title: 'PERFIL',
+          to: '/dashboard',
+        },
+        {
+          icon: 'home',
+          title: 'FASES',
+          to: '/dashboard',
+        },
+        {
+          icon: 'home',
+          title: 'CURSOS',
+          to: '/page',
         },
       ],
-      rightDrawer: false,
-      title: 'Pjex',
     }
+  },
+  methods: {
+    async logoutUserAsync() {
+      await this.$auth.logout()
+    },
   },
 }
 </script>

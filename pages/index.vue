@@ -1,13 +1,11 @@
-<template>
-  <PLogin />
-</template>
+<template><div></div></template>
 
 <script>
-import PLogin from '~/components/PLogin/index.vue'
-
 export default {
-  components: {
-    PLogin,
+  mounted() {
+    this.$router.push('/login')
   },
 }
 </script>
+
+<style scoped></style>
