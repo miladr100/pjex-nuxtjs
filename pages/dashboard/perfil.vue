@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <p>Dashboard</p>
-  </div>
+  <v-app>
+    <p>Perfil</p>
+  </v-app>
 </template>
 
 <script>

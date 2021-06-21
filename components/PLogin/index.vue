@@ -236,7 +236,7 @@ export default {
         })
         this.$router.push('/dashboard')
       } catch (err) {
-        console.log(err)
+        this.showToastMessage(err.response.data.message, 'error')
         this.isLoading = false
       }
     },
@@ -245,8 +245,9 @@ export default {
       if (this.userEmail && this.userPassword) {
         this.isLoading = true
         await this.login()
+        this.showToastMessage('Bem vindo ao Pjex!')
       } else {
-        alert('Por favor preencha todos os campos.')
+        this.showToastMessage('Por favor preencha todos os campos.', 'warning')
       }
     },
 
@@ -260,13 +261,21 @@ export default {
             password: this.userPassword,
           })
           await this.login()
+          this.showToastMessage('Usuário registrado com sucesso!')
         } catch (err) {
-          console.log(err)
+          this.showToastMessage(err.response.data.message, 'error')
           this.isLoading = false
         }
       } else {
-        alert('Por favor preencha todos os campos.')
+        this.showToastMessage('Por favor preencha todos os campos.', 'warning')
       }
+    },
+
+    showToastMessage(message, type = 'success') {
+      this.$store.dispatch('showToast', {
+        message,
+        type,
+      })
     },
   },
 }
