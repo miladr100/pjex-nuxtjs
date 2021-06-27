@@ -22,6 +22,8 @@ export default {
       },
       light: {
         primary: colors.teal.accent4,
+        lighten: colors.teal.darken3,
+        darken: colors.teal.darken4,
       },
     },
   },

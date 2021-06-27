@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <p>Dashboard</p>
-  </div>
+  <v-row>
+    <v-card>
+      <v-card-title>Bem vindo a plataforma do Jovem Exportador</v-card-title>
+    </v-card>
+  </v-row>
 </template>
 
 <script>

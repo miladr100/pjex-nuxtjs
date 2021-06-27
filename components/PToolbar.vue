@@ -1,15 +1,28 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" fixed :clipped="clipped" app dark>
+    <v-navigation-drawer
+      fixed
+      :clipped="clipped"
+      app
+      dark
+      :mini-variant="drawer"
+      :mobile-breakpoint="900"
+      class="lighten"
+    >
       <v-list>
         <v-list-item link>
           <v-list-item-avatar>
-            <img
+            <!-- <v-img
               :src="`https://randomuser.me/api/portraits/men/${28}.jpg`"
               alt=""
-            />
+            /> -->
+            <v-icon large>face</v-icon>
           </v-list-item-avatar>
-          <v-list-item-title v-text="this.$auth.user.name" />
+          <v-list-item-content>
+            <v-list-item-title class="text-h6" v-text="firstUserName" />
+            <v-list-item-subtitle v-text="this.$auth.user.email">
+            </v-list-item-subtitle>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
@@ -61,27 +74,37 @@ export default {
       drawer: true,
       items: [
         {
-          icon: 'home',
+          icon: 'space_dashboard',
           title: 'DASHBOARD',
           to: '/dashboard',
         },
         {
-          icon: 'home',
+          icon: 'account_circle',
           title: 'PERFIL',
           to: '/dashboard/perfil',
         },
         {
-          icon: 'home',
+          icon: 'add_chart',
           title: 'FASES',
           to: '/dashboard/fases',
         },
         {
-          icon: 'home',
+          icon: 'important_devices',
           title: 'CURSOS',
           to: '/page/cursos',
         },
+        {
+          icon: 'help_center',
+          title: 'Ajuda',
+          to: '/help',
+        },
       ],
     }
+  },
+  computed: {
+    firstUserName() {
+      return this.$auth.user.name.split(' ')[0]
+    },
   },
   methods: {
     async logoutUserAsync() {
