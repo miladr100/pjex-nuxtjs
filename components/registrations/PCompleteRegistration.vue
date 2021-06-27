@@ -2,6 +2,15 @@
   <v-row class="mt-5 mb-5 ml-5 mr-5">
     <v-col>
       <v-card elevation="3" class="mb-12" outlined>
+        <v-row class="mt-6 mb-4">
+          <v-col justify="center" align="center">
+            <v-img
+              :src="require('~/static/img/logo_programa.png')"
+              max-width="300"
+            >
+            </v-img>
+          </v-col>
+        </v-row>
         <v-card-title>Complete seu cadastro</v-card-title>
         <v-card-subtitle
           >Você está próximo de usar todas oportunidades que o Pjex tem a te
