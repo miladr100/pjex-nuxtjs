@@ -1,16 +1,11 @@
 <template>
-  <v-app id="appRoot">
+  <v-app>
     <nuxt />
-    <PToast />
   </v-app>
 </template>
 
 <script>
-import PToast from '~/components/PToast.vue'
-
 export default {
-  components: {
-    PToast,
-  },
+  components: {},
 }
 </script>

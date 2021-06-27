@@ -7,6 +7,6 @@
 <script>
 export default {
   components: {},
-  layout: 'loged',
+  layout: 'logged',
 }
 </script>

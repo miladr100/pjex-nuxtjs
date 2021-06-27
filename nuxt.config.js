@@ -29,7 +29,7 @@ export default {
   // css: ['font-awesome/css/font-awesome.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: ['~/plugins/vueMask.js', '~/plugins/vueToastNotification.js'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -51,6 +51,12 @@ export default {
     '@nuxtjs/auth-next',
   ],
 
+  env: {
+    brasilApi: 'https://brasilapi.com.br/api/',
+    ibgeApi: 'https://servicodados.ibge.gov.br/api/v1/',
+    pjexApiProd: 'https://hk-pjex-api-prod.herokuapp.com/api/',
+  },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     baseURL: 'https://hk-pjex-api-prod.herokuapp.com/api/',
@@ -69,11 +75,6 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     optionsPath: '@plugins/vuetify/vuetify.options.js',
-    defaultAssets: {
-      icons: {
-        iconfont: 'mdi', // 'mdi' || 'md' || 'fa' || 'fa4'
-      },
-    },
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

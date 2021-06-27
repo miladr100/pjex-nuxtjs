@@ -1,5 +1,5 @@
 <template>
-  <PLogin />
+  <v-app><PLogin /></v-app>
 </template>
 
 <script>
