@@ -91,12 +91,12 @@ export default {
         {
           icon: 'important_devices',
           title: 'CURSOS',
-          to: '/page/cursos',
+          to: '/dashboard/cursos',
         },
         {
           icon: 'help_center',
           title: 'Ajuda',
-          to: '/help',
+          to: '/dashboard/ajuda',
         },
       ],
     }

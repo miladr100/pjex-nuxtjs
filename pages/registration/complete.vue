@@ -1,5 +1,8 @@
 <template>
-  <p-complete-registration :all-states-of-brazil="allStatesOfBrazil" />
+  <p-complete-registration
+    v-if="mounted"
+    :all-states-of-brazil="allStatesOfBrazil"
+  />
 </template>
 
 <script>
@@ -20,6 +23,19 @@ export default {
     } catch (err) {
       console.error(err)
     }
+  },
+  data() {
+    return {
+      mounted: false,
+    }
+  },
+  mounted() {
+    if (this.$store.getters.isThereUserRegistration) {
+      this.$router.push('/dashboard')
+      return
+    }
+
+    this.$nextTick(() => (this.mounted = true))
   },
 }
 </script>

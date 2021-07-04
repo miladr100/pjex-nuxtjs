@@ -1,9 +1,9 @@
 <template>
   <v-app>
     <PToolbar />
-    <v-content>
+    <v-main>
       <nuxt class="mt-2 ml-2" />
-    </v-content>
+    </v-main>
     <PFooter />
   </v-app>
 </template>

@@ -1,31 +1,37 @@
 export const state = () => ({
-  users: {
-    name: '',
-    email: '',
-  },
-  toast: {
-    message: '',
-    type: 'success',
-    show: false,
+  userRegistration: {
+    nationality: '',
+    birthdate: '',
+    phone: '',
+    schoolinfo: '',
+    languageinfo: '',
+    zipcode: '',
+    neighborhood: '',
+    street: '',
+    state: '',
+    city: '',
+    number: '',
+    complement: '',
   },
 })
 
 export const mutations = {
-  updateUser: (state, payload) => (state.users = payload),
-  updateToastMessage: (state, payload) => (state.toast.message = payload),
-  updateToastType: (state, payload) => (state.toast.type = payload),
-  updateToastShow: (state, payload) => (state.toast.show = payload),
+  updateUserRegistration: (state, payload) =>
+    (state.userRegistration = payload),
 }
 
 export const actions = {
-  showToast({ commit }, payload) {
-    commit('updateToastMessage', payload.message)
-    if (payload.type) commit('updateToastType', payload.type)
-    commit('updateToastShow', true)
+  async getAndSetUserRegistrationAsync({ commit }) {
+    const endpoint = `/users/register/${this.$auth.user.id}`
+    const userRegister = await this.$axios.$get(endpoint)
+    commit('updateUserRegistration', userRegister)
+  },
+}
 
-    setTimeout(() => {
-      commit('updateToastShow', false)
-      commit('updateToastType', 'success')
-    }, 6000)
+export const getters = {
+  isThereUserRegistration: (state) => {
+    if (state.userRegistration.birthdate && state.userRegistration.zipcode)
+      return true
+    return false
   },
 }

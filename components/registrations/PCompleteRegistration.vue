@@ -127,13 +127,25 @@
                 </v-row>
 
                 <div v-if="!isFeatchingAddress">
-                  <v-text-field
-                    v-model="form.address.neighborhood.value"
-                    :label="form.address.neighborhood.label"
-                    :placeholder="form.address.neighborhood.placeholder"
-                    :error-messages="neighborhoodErrors"
-                    filled
-                  ></v-text-field>
+                  <v-row>
+                    <v-col cols="12" md="9">
+                      <v-text-field
+                        v-model="form.address.neighborhood.value"
+                        :label="form.address.neighborhood.label"
+                        :placeholder="form.address.neighborhood.placeholder"
+                        :error-messages="neighborhoodErrors"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <v-text-field
+                        v-model="form.address.number.value"
+                        :label="form.address.number.label"
+                        :placeholder="form.address.number.placeholder"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
 
                   <v-text-field
                     v-model="form.address.street.value"
@@ -209,6 +221,7 @@ import { validationMixin } from "vuelidate"
 // eslint-disable-next-line prettier/prettier
 import { required } from "vuelidate/lib/validators"
 import { zipCode, phone } from '~/shared/validators'
+import { removeMask } from '~/shared/helpers'
 
 export default {
   name: 'PCompleteRegistration',
@@ -257,6 +270,11 @@ export default {
           street: {
             label: 'Logradouro',
             placeholder: 'Ex: Rua Maria Izabel',
+            value: '',
+          },
+          number: {
+            label: 'Nº',
+            placeholder: 'Ex: 84',
             value: '',
           },
           state: {
@@ -467,16 +485,45 @@ export default {
       this.form.birthdate.value = `${arrDate[2]}/${arrDate[1]}/${arrDate[0]}`
       this.activePicker = !this.activePicker
     },
-    handleSubmit() {
+    async handleSubmit() {
       this.$v.$touch()
       if (this.$v.$invalid) return
 
       this.isSubmitting = true
+
+      try {
+        const endpoint = `/users/register/${this.$auth.user.id}`
+        await this.$axios.post(endpoint, this.mountPaylodToSubmit())
+        this.$store.commit('updateUserRegistration', this.mountPaylodToSubmit())
+        this.$toast.open({
+          message: 'Dados salvos com sucesso!',
+          type: 'success',
+        })
+      } catch (err) {
+        this.$toast.open({
+          message: 'Erro ao salvar dados. Por favor tente mais tarde.',
+          type: 'error',
+        })
+      }
       this.$router.push('/dashboard')
-      this.$toast.open({
-        message: 'Dados salvos com sucesso!',
-        type: 'success',
-      })
+    },
+    mountPaylodToSubmit() {
+      const form = this.form
+      const address = this.form.address
+      return {
+        nationality: form.nationality.value,
+        birthdate: removeMask(form.birthdate.value),
+        phone: removeMask(form.phone.value),
+        schoolinfo: form.schoolinfo.value,
+        languageinfo: form.languageinfo.value,
+        zipcode: parseInt(removeMask(address.zipcode.value)),
+        neighborhood: address.neighborhood.value,
+        street: address.street.value,
+        state: address.state.value,
+        city: address.city.value,
+        number: address.number.value,
+        complement: '',
+      }
     },
   },
 }

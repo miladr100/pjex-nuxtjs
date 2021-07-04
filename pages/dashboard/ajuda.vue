@@ -1,12 +1,12 @@
 <template>
   <v-app>
-    <p>Perfil</p>
+    <p>Ajuda</p>
   </v-app>
 </template>
 
 <script>
 export default {
-  name: 'Perfil',
+  name: 'Ajuda',
   components: {},
   layout: 'logged',
 }
