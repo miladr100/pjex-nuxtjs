@@ -3,7 +3,7 @@
 <script>
 export default {
   mounted() {
-    if (this.$auth.user.email) {
+    if (this.$auth?.user?.email) {
       this.$router.push('/dashboard')
       return
     }
