@@ -15,10 +15,6 @@
 
       <v-stepper-content step="1">
         <step-one-form />
-        <v-btn color="primary" :loading="submit" @click="submitForm()">
-          Continue
-        </v-btn>
-        <v-btn text> Cancel </v-btn>
       </v-stepper-content>
 
       <v-stepper-step :complete="step > 2" step="2" complete-icon="done">
@@ -28,11 +24,9 @@
 
       <v-stepper-content step="2">
         <step-two-form />
-        <v-btn color="primary" @click="step = 3"> Continuar </v-btn>
-        <v-btn text> Voltar </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step :complete="step > 3" step="3" complete-icon="done">
+      <!-- <v-stepper-step :complete="step > 3" step="3" complete-icon="done">
         Select an ad format and name ad unit
       </v-stepper-step>
 
@@ -49,7 +43,7 @@
         <step-three-form />
         <v-btn color="primary" @click="step = 1"> Continue </v-btn>
         <v-btn text> Cancel </v-btn>
-      </v-stepper-content>
+      </v-stepper-content> -->
     </v-stepper>
   </v-app>
 </template>
@@ -57,23 +51,30 @@
 <script>
 import StepOneForm from '~/components/registrations/PExporterRegistration/step-one-form.vue'
 import StepTwoForm from '~/components/registrations/PExporterRegistration/step-two-form.vue'
-import StepThreeForm from '~/components/registrations/PExporterRegistration/step-three-form.vue'
+// import StepThreeForm from '~/components/registrations/PExporterRegistration/step-three-form.vue'
 
 export default {
   name: 'PExporterRegistration',
   components: {
     'step-one-form': StepOneForm,
     'step-two-form': StepTwoForm,
-    'step-three-form': StepThreeForm,
+    // 'step-three-form': StepThreeForm,
   },
   data() {
     return {
-      step: 1,
       submit: false,
     }
   },
   head: {
     title: 'Cadastro exportador',
+  },
+  computed: {
+    step() {
+      return this.$store.state.registrationStep
+    },
+  },
+  mounted() {
+    this.$store.commit('updateRegistrationStep', 1)
   },
   methods: {
     submitForm() {

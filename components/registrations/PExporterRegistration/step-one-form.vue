@@ -162,6 +162,12 @@
         </v-col>
       </v-row>
     </v-form>
+    <v-card-actions class="ml-4 mr-4 mt-4 mb-4">
+      <v-btn color="primary" :loading="isSubmitting" @click="handleSubmit()">
+        Avançar
+      </v-btn>
+      <v-btn text @click="returnDashboard()"> Cancelar </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
@@ -172,7 +178,7 @@ import { validationMixin } from "vuelidate"
 import { required } from "vuelidate/lib/validators"
 import ibgeUtils from '~/shared/mixins/ibgeUtils.mixin'
 import { zipCode } from '~/shared/validators'
-// import { removeMask } from '~/shared/helpers'
+import { removeMask } from '~/shared/helpers'
 
 export default {
   name: 'StepOneForm',
@@ -390,8 +396,35 @@ export default {
   },
   async mounted() {
     this.allStates = await this.getAllStatesFormattedAsync()
+    await this.getDataFromStoreAsync()
   },
   methods: {
+    async getDataFromStoreAsync() {
+      const businessData = this.$store.state.businessRegistration
+      console.log(businessData)
+      if (businessData.razao_social)
+        this.form.name.value = businessData.razao_social
+      if (businessData.nome_fantasia)
+        this.form.nick.value = businessData.nome_fantasia
+      if (businessData.cnae_fiscal)
+        this.form.cnae.value = businessData.cnae_fiscal
+      this.idFetchingBusiness = false
+      if (businessData.zipcode) {
+        this.form.address.zipcode.value = businessData.cep
+        await this.getAddressDataByZipcodeAsync(businessData.cep)
+        if (businessData.neighborhood)
+          this.form.address.neighborhood.value = businessData.neighborhood
+        if (businessData.street)
+          this.form.address.street.value = businessData.street
+        if (businessData.state)
+          this.form.address.state.value = businessData.state
+        if (businessData.city) this.form.address.city.value = businessData.city
+        if (businessData.number)
+          this.form.address.number.value = businessData.number
+        if (businessData.complement)
+          this.form.address.complement.value = businessData.complement
+      }
+    },
     async getAndSetCitiesByStateCodeAsync(stateId) {
       const { data } = await this.$axios.get(
         `${process.env.ibgeApi}localidades/estados/${stateId}/municipios`
@@ -437,6 +470,29 @@ export default {
       if (this.$v.$invalid) return
 
       this.isSubmitting = true
+
+      this.$store.commit('updateBusinessRegistration', this.getDataToSubmit())
+      this.$store.commit('updateRegistrationStep', 2)
+
+      this.isSubmitting = false
+    },
+    getDataToSubmit() {
+      return {
+        cnpj: removeMask(this.form.cnpj.value),
+        razao_social: this.form.name.value,
+        nome_fantasia: this.form.nick.value,
+        cnae_fiscal: this.form.cnae.value,
+        zipcode: removeMask(this.form.address.zipcode.value),
+        neighborhood: this.form.address.neighborhood.value,
+        street: this.form.address.street.value,
+        state: this.form.address.state.value,
+        city: this.form.address.city.value,
+        number: this.form.address.number.value,
+        complement: this.form.address.complement.value,
+      }
+    },
+    returnDashboard() {
+      this.$router.push('/dashboard')
     },
   },
 }

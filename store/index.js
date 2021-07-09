@@ -14,12 +14,30 @@ export const state = () => ({
     complement: '',
   },
 
-  allStates: [],
+  businessRegistration: {
+    cnpj: '',
+    razao_social: '',
+    nome_fantasia: '',
+    cnae_fiscal: '',
+    zipcode: '',
+    neighborhood: '',
+    street: '',
+    state: '',
+    city: '',
+    number: '',
+    complement: '',
+  },
+
+  registrationStep: 0,
 })
 
 export const mutations = {
   updateUserRegistration: (state, payload) =>
     (state.userRegistration = payload),
+  updateBusinessRegistration: (state, payload) =>
+    (state.businessRegistration = payload),
+  updateRegistrationStep: (state, payload) =>
+    (state.registrationStep = payload),
 }
 
 export const actions = {
