@@ -12,7 +12,7 @@ export default {
   components: {
     'p-exporter-registration': PExporterRegistration,
   },
-  layout: 'logged',
+  middleware: ['auth'],
   data() {
     return {}
   },

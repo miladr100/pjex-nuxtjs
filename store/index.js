@@ -13,6 +13,8 @@ export const state = () => ({
     number: '',
     complement: '',
   },
+
+  allStates: [],
 })
 
 export const mutations = {

@@ -1,18 +1,23 @@
 <template>
   <v-app>
-    <v-card-title class="ml-2">Cadastro Exportador</v-card-title>
+    <v-row class="mt-6 mb-4">
+      <v-col justify="center" align="center">
+        <v-img :src="require('~/static/img/logo_programa.png')" max-width="300">
+        </v-img>
+      </v-col>
+    </v-row>
+    <v-card-title class="ml-2">Cadastro do Exportador</v-card-title>
     <v-stepper v-model="step" vertical>
       <v-stepper-step :complete="step > 1" step="1" complete-icon="done">
-        Dados de quem está cadastrando
-        <small
-          >Preencha os campos abaixo com os dados do responsável que está
-          preenchendo o formulário.</small
-        >
+        Dados da empresa
+        <small>Preencha os campos abaixo com os dados da sua empresa.</small>
       </v-stepper-step>
 
       <v-stepper-content step="1">
         <step-one-form />
-        <v-btn color="primary" @click="step = 2"> Continue </v-btn>
+        <v-btn color="primary" :loading="submit" @click="submitForm()">
+          Continue
+        </v-btn>
         <v-btn text> Cancel </v-btn>
       </v-stepper-content>
 
@@ -64,10 +69,16 @@ export default {
   data() {
     return {
       step: 1,
+      submit: false,
     }
   },
   head: {
     title: 'Cadastro exportador',
+  },
+  methods: {
+    submitForm() {
+      this.submit = true
+    },
   },
 }
 </script>
