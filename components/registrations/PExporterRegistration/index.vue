@@ -10,7 +10,7 @@
     <v-stepper v-model="step" vertical>
       <v-stepper-step :complete="step > 1" step="1" complete-icon="done">
         Dados da empresa
-        <small>Preencha os campos abaixo com os dados da sua empresa.</small>
+        <!-- <small>Preencha os campos abaixo com os dados da sua empresa.</small> -->
       </v-stepper-step>
 
       <v-stepper-content step="1">
@@ -18,8 +18,8 @@
       </v-stepper-content>
 
       <v-stepper-step :complete="step > 2" step="2" complete-icon="done">
-        Dados da empresa
-        <small>Preencha os campos abaixo com os dados da empresa.</small>
+        Dados sobre empresa
+        <!-- <small>Preencha os campos abaixo com sobre a empresa.</small> -->
       </v-stepper-step>
 
       <v-stepper-content step="2">

@@ -26,6 +26,8 @@ export const state = () => ({
     city: '',
     number: '',
     complement: '',
+    about: {},
+    exportation: {},
   },
 
   registrationStep: 0,
@@ -34,10 +36,14 @@ export const state = () => ({
 export const mutations = {
   updateUserRegistration: (state, payload) =>
     (state.userRegistration = payload),
-  updateBusinessRegistration: (state, payload) =>
-    (state.businessRegistration = payload),
   updateRegistrationStep: (state, payload) =>
     (state.registrationStep = payload),
+  updateBusinessRegistration: (state, payload) =>
+    (state.businessRegistration = payload),
+  businessRegistrationAbout: (state, payload) =>
+    (state.businessRegistration.about = payload),
+  businessRegistrationExportation: (state, payload) =>
+    (state.businessRegistration.exportation = payload),
 }
 
 export const actions = {

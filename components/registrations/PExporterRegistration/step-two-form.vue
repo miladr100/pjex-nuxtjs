@@ -3,21 +3,28 @@
     <v-form ref="form" class="ml-4 mr-4 mt-4 mb-4" lazy-validation>
       <v-row>
         <v-col>
-          <v-text-field
-            v-model="form.foundation.value"
-            :label="form.foundation.label"
-            :placeholder="form.foundation.placeholder"
-            :error-messages="foundationErrors"
-            filled
-          ></v-text-field>
-
-          <v-text-field
-            v-model="form.employees.value"
-            :label="form.employees.label"
-            :placeholder="form.employees.placeholder"
-            :error-messages="employeesErrors"
-            filled
-          ></v-text-field>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="form.foundation.value"
+                v-mask="'####'"
+                :label="form.foundation.label"
+                :placeholder="form.foundation.placeholder"
+                :error-messages="foundationErrors"
+                filled
+              ></v-text-field>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="form.employees.value"
+                v-mask="'#####'"
+                :label="form.employees.label"
+                :placeholder="form.employees.placeholder"
+                :error-messages="employeesErrors"
+                filled
+              ></v-text-field>
+            </v-col>
+          </v-row>
 
           <v-select
             v-model="form.billing.value"
@@ -34,6 +41,7 @@
             v-model="form.sector.value"
             :label="form.sector.label"
             :items="allSectors"
+            item-text="value"
             :disabled="allSectors.length == 0"
             :placeholder="form.sector.placeholder"
             :error-messages="sectorErrors"
@@ -67,6 +75,7 @@ import { validationMixin } from "vuelidate"
 // eslint-disable-next-line prettier/prettier
 import { required } from "vuelidate/lib/validators"
 // import { removeMask } from '~/shared/helpers'
+import { setoresDeAtuacao } from './constants'
 
 export default {
   name: 'StepTwoForm',
@@ -81,7 +90,6 @@ export default {
         'GRANDE – acima de 10 milhões',
       ],
       allSectors: [],
-      allSubsectors: [],
       form: {
         foundation: {
           label: 'Ano de fundação',
@@ -89,18 +97,18 @@ export default {
           value: '',
         },
         employees: {
-          label: 'Nome fantasia',
-          placeholder: 'Ex: Caetano desenvolvimento ',
+          label: 'Qntd de funcionarios',
+          placeholder: 'Ex: 100',
           value: '',
         },
         billing: {
           label: 'Faixa atual de faturamento',
-          placeholder: 'Ex: 07.526.557/0001-00 ',
+          placeholder: 'Ex: Selecione a faixa ',
           value: '',
         },
         sector: {
           label: 'Setor de atuação',
-          placeholder: 'Ex: alimentos e bebidas',
+          placeholder: 'Ex: Alimentos e bebidas',
           value: '',
         },
         subsector: {
@@ -143,6 +151,12 @@ export default {
     }
   },
   computed: {
+    allSubsectors() {
+      const sector = this.allSectors.find(
+        (sector) => this.form.sector.value === sector.value
+      )
+      return sector ? sector.sub : []
+    },
     foundationErrors() {
       return this.$v.form.foundation.value.$dirty &&
         !this.$v.form.foundation.value.required
@@ -174,6 +188,9 @@ export default {
         : []
     },
   },
+  mounted() {
+    this.allSectors = setoresDeAtuacao
+  },
   methods: {
     handleSubmit() {
       this.$v.$touch()
@@ -181,10 +198,20 @@ export default {
 
       this.isSubmitting = true
 
-      // this.$store.commit('updateBusinessRegistration', this.getDataToSubmit())
+      this.$store.commit('businessRegistrationAbout', this.getDataToSubmit())
+      console.log(this.$store.state.businessRegistration)
       this.$store.commit('updateRegistrationStep', 3)
 
       this.isSubmitting = false
+    },
+    getDataToSubmit() {
+      return {
+        fundacao: this.form.foundation.value,
+        quantidade_funcionarios: this.form.employees.value,
+        faixa_faturamento: this.form.billing.value,
+        setor_atuacao: this.form.sector.value,
+        subsetor_atuacao: this.form.subsector.value,
+      }
     },
     returnStep() {
       this.$store.commit('updateRegistrationStep', 1)
