@@ -199,7 +199,6 @@ export default {
       this.isSubmitting = true
 
       this.$store.commit('businessRegistrationAbout', this.getDataToSubmit())
-      console.log(this.$store.state.businessRegistration)
       this.$store.commit('updateRegistrationStep', 3)
 
       this.isSubmitting = false

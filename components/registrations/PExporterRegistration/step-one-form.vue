@@ -401,7 +401,6 @@ export default {
   methods: {
     async getDataFromStoreAsync() {
       const businessData = this.$store.state.businessRegistration
-      console.log(businessData)
       if (businessData.razao_social)
         this.form.name.value = businessData.razao_social
       if (businessData.nome_fantasia)

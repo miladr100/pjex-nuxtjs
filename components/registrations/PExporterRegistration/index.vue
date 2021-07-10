@@ -26,17 +26,15 @@
         <step-two-form />
       </v-stepper-content>
 
-      <!-- <v-stepper-step :complete="step > 3" step="3" complete-icon="done">
-        Select an ad format and name ad unit
+      <v-stepper-step :complete="step > 3" step="3" complete-icon="done">
+        Dados sobre exportação
       </v-stepper-step>
 
       <v-stepper-content step="3">
         <step-three-form />
-        <v-btn color="primary" @click="step = 4"> Continue </v-btn>
-        <v-btn text> Cancel </v-btn>
       </v-stepper-content>
 
-      <v-stepper-step step="4" complete-icon="done">
+      <!-- <v-stepper-step step="4" complete-icon="done">
         View setup instructions
       </v-stepper-step>
       <v-stepper-content step="4">
@@ -51,14 +49,14 @@
 <script>
 import StepOneForm from '~/components/registrations/PExporterRegistration/step-one-form.vue'
 import StepTwoForm from '~/components/registrations/PExporterRegistration/step-two-form.vue'
-// import StepThreeForm from '~/components/registrations/PExporterRegistration/step-three-form.vue'
+import StepThreeForm from '~/components/registrations/PExporterRegistration/step-three-form.vue'
 
 export default {
   name: 'PExporterRegistration',
   components: {
     'step-one-form': StepOneForm,
     'step-two-form': StepTwoForm,
-    // 'step-three-form': StepThreeForm,
+    'step-three-form': StepThreeForm,
   },
   data() {
     return {
