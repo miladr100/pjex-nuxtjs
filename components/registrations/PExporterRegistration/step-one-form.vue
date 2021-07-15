@@ -166,7 +166,8 @@
       <v-btn color="primary" :loading="isSubmitting" @click="handleSubmit()">
         Avançar
       </v-btn>
-      <v-btn text @click="returnDashboard()"> Cancelar </v-btn>
+      <v-divider dark></v-divider>
+      <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -399,28 +400,34 @@ export default {
     await this.getDataFromStoreAsync()
   },
   methods: {
+    cancelForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', true)
+    },
+    returnToForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', false)
+    },
     async getDataFromStoreAsync() {
       const businessData = this.$store.state.businessRegistration
-      if (businessData.razao_social)
+      if (businessData?.razao_social)
         this.form.name.value = businessData.razao_social
-      if (businessData.nome_fantasia)
+      if (businessData?.nome_fantasia)
         this.form.nick.value = businessData.nome_fantasia
-      if (businessData.cnae_fiscal)
+      if (businessData?.cnae_fiscal)
         this.form.cnae.value = businessData.cnae_fiscal
       this.idFetchingBusiness = false
-      if (businessData.zipcode) {
-        this.form.address.zipcode.value = businessData.cep
-        await this.getAddressDataByZipcodeAsync(businessData.cep)
-        if (businessData.neighborhood)
+      if (businessData?.zipcode) {
+        this.form.address.zipcode.value = businessData.zipcode
+        await this.getAddressDataByZipcodeAsync(businessData.zipcode)
+        if (businessData?.neighborhood)
           this.form.address.neighborhood.value = businessData.neighborhood
-        if (businessData.street)
+        if (businessData?.street)
           this.form.address.street.value = businessData.street
-        if (businessData.state)
+        if (businessData?.state)
           this.form.address.state.value = businessData.state
-        if (businessData.city) this.form.address.city.value = businessData.city
-        if (businessData.number)
+        if (businessData?.city) this.form.address.city.value = businessData.city
+        if (businessData?.number)
           this.form.address.number.value = businessData.number
-        if (businessData.complement)
+        if (businessData?.complement)
           this.form.address.complement.value = businessData.complement
       }
     },
@@ -489,9 +496,6 @@ export default {
         number: this.form.address.number.value,
         complement: this.form.address.complement.value,
       }
-    },
-    returnDashboard() {
-      this.$router.push('/dashboard')
     },
   },
 }

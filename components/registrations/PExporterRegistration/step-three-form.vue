@@ -18,6 +18,9 @@
                 v-model="form.timeExporting.value"
                 v-mask="'###'"
                 :label="form.timeExporting.label"
+                :disabled="
+                  !form.alreadyExport.value || form.alreadyExport.value == 'Não'
+                "
                 :placeholder="form.timeExporting.placeholder"
                 filled
               ></v-text-field>
@@ -26,7 +29,9 @@
               <v-select
                 v-model="form.time"
                 :items="yearOrMonth"
-                :disabled="yesOrNo.length == 0"
+                :disabled="
+                  !form.alreadyExport.value || form.alreadyExport.value == 'Não'
+                "
                 filled
               ></v-select>
             </v-col>
@@ -36,7 +41,9 @@
             v-model="form.frequentlyExporting.value"
             :label="form.frequentlyExporting.label"
             :items="yesOrNo"
-            :disabled="yesOrNo.length == 0"
+            :disabled="
+              !form.alreadyExport.value || form.alreadyExport.value == 'Não'
+            "
             :placeholder="form.frequentlyExporting.placeholder"
             filled
           ></v-select>
@@ -45,6 +52,9 @@
             v-model="form.valueExporting.value"
             v-mask="'R$ ############'"
             :label="form.valueExporting.label"
+            :disabled="
+              !form.alreadyExport.value || form.alreadyExport.value == 'Não'
+            "
             :placeholder="form.valueExporting.placeholder"
             filled
           ></v-text-field>
@@ -67,29 +77,43 @@
             filled
           ></v-select>
 
-          <v-text-field
-            v-model="form.certification.value"
-            :label="form.certification.label"
-            :placeholder="form.certification.placeholder"
-            filled
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6" sm="12">
-          <v-select
-            v-model="form.needCertificationAbroad.value"
-            :label="form.needCertificationAbroad.label"
-            :items="yesOrNo"
-            :disabled="yesOrNo.length == 0"
-            :placeholder="form.needCertificationAbroad.placeholder"
-            filled
-          ></v-select>
-
           <v-select
             v-model="form.rastreability.value"
             :label="form.rastreability.label"
             :items="yesOrNo"
             :disabled="yesOrNo.length == 0"
             :placeholder="form.rastreability.placeholder"
+            filled
+          ></v-select>
+        </v-col>
+        <v-col cols="12" md="6" sm="12">
+          <v-select
+            v-model="form.certification.value"
+            :label="form.certification.label"
+            :items="yesOrNo"
+            :disabled="yesOrNo.length == 0"
+            :placeholder="form.certification.placeholder"
+            filled
+          ></v-select>
+
+          <v-text-field
+            v-model="form.witchCertification.value"
+            :label="form.witchCertification.label"
+            :disabled="
+              !form.certification.value || form.certification.value == 'Não'
+            "
+            :placeholder="form.witchCertification.placeholder"
+            filled
+          ></v-text-field>
+
+          <v-select
+            v-model="form.needCertificationAbroad.value"
+            :label="form.needCertificationAbroad.label"
+            :items="yesOrNo"
+            :disabled="
+              !form.certification.value || form.certification.value == 'Não'
+            "
+            :placeholder="form.needCertificationAbroad.placeholder"
             filled
           ></v-select>
 
@@ -135,12 +159,16 @@
       <v-btn color="primary" :loading="isSubmitting" @click="handleSubmit()">
         Avançar
       </v-btn>
-      <v-btn text @click="returnStep()"> Cancelar </v-btn>
+      <v-btn text @click="returnStep()"> Voltar </v-btn>
+      <v-divider dark></v-divider>
+      <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import { removeMask } from '~/shared/helpers'
+
 export default {
   name: 'StepThreeForm',
   data() {
@@ -185,23 +213,28 @@ export default {
           value: '',
         },
         witchBase: {
-          label: 'Qual?',
+          label: 'Que tipo de base?',
           placeholder: 'Escolha uma das opções.',
           value: '',
         },
+        rastreability: {
+          label: 'Sua empresa segue algum protocolo de rastreabilidade?',
+          placeholder: 'Sim / Não',
+          value: '',
+        },
         certification: {
-          label: 'Sua empresa possui alguma certificação? Qual?',
+          label: 'Sua empresa possui alguma certificação?',
+          placeholder: 'Sim / Não',
+          value: '',
+        },
+        witchCertification: {
+          label: 'Quais certificações?',
           placeholder: 'Escreva as certificações',
           value: '',
         },
         needCertificationAbroad: {
           label:
             'Esta certificação é exigida pelo mercado internacional p/ produto?',
-          placeholder: 'Sim / Não',
-          value: '',
-        },
-        rastreability: {
-          label: 'Sua empresa segue algum protocolo de rastreabilidade?',
           placeholder: 'Sim / Não',
           value: '',
         },
@@ -233,14 +266,47 @@ export default {
     }
   },
   methods: {
+    cancelForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', true)
+    },
+    returnToForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', false)
+    },
     handleSubmit() {
-      // this.$v.$touch()
-      // if (this.$v.$invalid) return
-      // this.isSubmitting = true
-      // this.$store.commit('businessRegistrationAbout', this.getDataToSubmit())
-      // console.log(this.$store.state.businessRegistration)
-      // this.$store.commit('updateRegistrationStep', 3)
-      // this.isSubmitting = false
+      this.isSubmitting = true
+      this.$store.commit(
+        'updateBusinessRegistrationExportationInfo',
+        this.getDataToSubmit()
+      )
+      this.$store.commit('updateRegistrationStep', 4)
+      this.isSubmitting = false
+    },
+    trueOrFase(text) {
+      return text === 'Sim'
+    },
+    getDataToSubmit() {
+      return {
+        exportador: this.trueOrFase(this.form.alreadyExport.value),
+        tempo_exportador: this.form.timeExporting.value + '/' + this.form.time,
+        exportador_recorrente: this.trueOrFase(
+          this.form.frequentlyExporting.value
+        ),
+        valor_exportacoes: removeMask(this.form.valueExporting.value),
+        base_exterior: this.trueOrFase(this.form.baseAbroad.value),
+        tipo_base: this.form.witchBase.value,
+        protocolo_rastreabilidade: this.trueOrFase(
+          this.form.rastreability.value
+        ),
+        certificacao: this.trueOrFase(this.form.certification.value),
+        certificacoes: this.form.witchCertification.value,
+        certificacao_exigencia_internacional: this.trueOrFase(
+          this.form.needCertificationAbroad.value
+        ),
+        acessoria_contabil: this.trueOrFase(this.form.contabilHelp.value),
+        acessoria_juridica: this.trueOrFase(this.form.loyalHelp.value),
+        fechamento_cambio: this.trueOrFase(this.form.exchange.value),
+        agente_aduaneiro: this.trueOrFase(this.form.logisticManager.value),
+      }
     },
     returnStep() {
       this.$store.commit('updateRegistrationStep', 2)

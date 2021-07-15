@@ -60,15 +60,57 @@
       <v-spacer />
       <v-icon @click="logoutUserAsync()">logout</v-icon>
     </v-app-bar>
+
+    <div class="text-center">
+      <v-dialog v-model="dialog" width="500" persistent>
+        <v-card>
+          <v-card-title class="text-h5 grey lighten-2">
+            Cadastre sua empresa
+          </v-card-title>
+
+          <v-card-text class="mt-4">
+            Para aproveitar todas as vantagens de nossa plataforma, você deve
+            escolher uma das categorias e cadastrar sua empresa.
+          </v-card-text>
+
+          <v-card-text>
+            <v-select
+              v-model="businessRegister"
+              :items="bussinesType"
+              label="Eu sou..."
+              :error-messages="bussinesTypeErrors"
+              filled
+            ></v-select>
+          </v-card-text>
+
+          <v-divider></v-divider>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="registerBusiness">
+              Cadastrar empresa
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line prettier/prettier
+import { validationMixin } from "vuelidate"
+// eslint-disable-next-line prettier/prettier
+import { required } from "vuelidate/lib/validators"
+
 export default {
   name: 'PToolbar',
   components: {},
+  mixins: [validationMixin],
   data() {
     return {
+      businessRegister: '',
+      bussinesType: ['Exportador'],
       title: 'Pjex',
       clipped: false,
       drawer: true,
@@ -101,14 +143,35 @@ export default {
       ],
     }
   },
+  validations() {
+    return {
+      businessRegister: {
+        required,
+      },
+    }
+  },
   computed: {
     firstUserName() {
       return this.$auth.user.name.split(' ')[0]
+    },
+    dialog() {
+      return !this.$store.state.userRegistration?.is_company_registered
+    },
+    bussinesTypeErrors() {
+      return this.$v.businessRegister.$dirty &&
+        !this.$v.businessRegister.required
+        ? ['Preenchimento obrigatório']
+        : []
     },
   },
   methods: {
     async logoutUserAsync() {
       await this.$auth.logout()
+    },
+    registerBusiness() {
+      this.$v.$touch()
+      if (this.$v.$invalid) return
+      this.$router.push('/registration/exporter')
     },
   },
 }

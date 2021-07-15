@@ -65,6 +65,8 @@
         Avançar
       </v-btn>
       <v-btn text @click="returnStep()"> Voltar </v-btn>
+      <v-divider dark></v-divider>
+      <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -125,6 +127,9 @@ export default {
         foundation: {
           value: {
             required,
+            isValid: (year) => {
+              return year > 1800
+            },
           },
         },
         employees: {
@@ -161,6 +166,9 @@ export default {
       return this.$v.form.foundation.value.$dirty &&
         !this.$v.form.foundation.value.required
         ? ['Preenchimento obrigatório']
+        : this.$v.form.foundation.value.$dirty &&
+          !this.$v.form.foundation.value.isValid
+        ? ['Ano inválido']
         : []
     },
     employeesErrors() {
@@ -192,13 +200,22 @@ export default {
     this.allSectors = setoresDeAtuacao
   },
   methods: {
+    cancelForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', true)
+    },
+    returnToForm() {
+      this.$store.commit('updateExporterRegistrationCancelDialog', false)
+    },
     handleSubmit() {
       this.$v.$touch()
       if (this.$v.$invalid) return
 
       this.isSubmitting = true
 
-      this.$store.commit('businessRegistrationAbout', this.getDataToSubmit())
+      this.$store.commit(
+        'updateBusinessRegistrationAbout',
+        this.getDataToSubmit()
+      )
       this.$store.commit('updateRegistrationStep', 3)
 
       this.isSubmitting = false

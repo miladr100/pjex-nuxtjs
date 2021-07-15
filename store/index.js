@@ -1,4 +1,6 @@
 export const state = () => ({
+  exporterRegistrationCancelDialog: false,
+
   userRegistration: {
     nationality: '',
     birthdate: '',
@@ -12,6 +14,7 @@ export const state = () => ({
     city: '',
     number: '',
     complement: '',
+    is_company_registered: false,
   },
 
   businessRegistration: {
@@ -27,7 +30,7 @@ export const state = () => ({
     number: '',
     complement: '',
     about: {},
-    exportation: {},
+    exportation_info: {},
   },
 
   registrationStep: 0,
@@ -40,10 +43,14 @@ export const mutations = {
     (state.registrationStep = payload),
   updateBusinessRegistration: (state, payload) =>
     (state.businessRegistration = payload),
-  businessRegistrationAbout: (state, payload) =>
+  updateBusinessRegistrationAbout: (state, payload) =>
     (state.businessRegistration.about = payload),
-  businessRegistrationExportation: (state, payload) =>
-    (state.businessRegistration.exportation = payload),
+  updateBusinessRegistrationExportationInfo: (state, payload) =>
+    (state.businessRegistration.exportation_info = payload),
+  updateExporterRegistrationCancelDialog: (state, payload) =>
+    (state.exporterRegistrationCancelDialog = payload),
+  updateIsCompanyRegistered: (state, payload) =>
+    (state.userRegistration.is_company_registered = payload),
 }
 
 export const actions = {

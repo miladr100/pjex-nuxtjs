@@ -130,7 +130,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: 'https://hk-pjex-api-prod.herokuapp.com/api/',
+    baseURL: 'https://pjex-api-prod.herokuapp.com/api/',
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

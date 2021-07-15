@@ -7,7 +7,7 @@ import 'vue-toast-notification/dist/theme-sugar.css'
 Vue.use(VueToast, {
   // One of the options
   position: 'top-right',
-  duration: '5000',
+  duration: 5000,
   dismissible: true,
 })
 // Vue.$toast.open({/* options */});
