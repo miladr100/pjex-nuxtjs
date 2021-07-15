@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <v-container>
     <v-navigation-drawer
+      v-model="drawerMenu"
       fixed
       :clipped="clipped"
       app
       dark
-      :mini-variant="drawer"
+      :mini-variant="drawerMiniVariant"
       :mobile-breakpoint="900"
       class="lighten"
     >
@@ -94,7 +95,7 @@
         </v-card>
       </v-dialog>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -126,9 +127,9 @@ export default {
           to: '/dashboard/perfil',
         },
         {
-          icon: 'add_chart',
-          title: 'FASES',
-          to: '/dashboard/fases',
+          icon: 'local_activity',
+          title: 'EVENTOS',
+          to: '/dashboard/eventos',
         },
         {
           icon: 'important_devices',
@@ -156,6 +157,20 @@ export default {
     },
     dialog() {
       return !this.$store.state.userRegistration?.is_company_registered
+    },
+    screenWidth() {
+      return this.$vuetify.breakpoint.width
+    },
+    drawerMenu: {
+      get() {
+        return this.screenWidth > 900 ? true : this.drawer
+      },
+      set(val) {
+        if (this.screenWidth < 900) this.drawer = val
+      },
+    },
+    drawerMiniVariant() {
+      return this.screenWidth < 900 ? false : this.drawer
     },
     bussinesTypeErrors() {
       return this.$v.businessRegister.$dirty &&

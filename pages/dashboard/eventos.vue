@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <p>Fases</p>
+    <p>Eventos</p>
   </v-app>
 </template>
 

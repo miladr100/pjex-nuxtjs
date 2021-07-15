@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="3" class="mb-12" outlined>
+  <v-card v-if="!isLoading" elevation="3" class="mb-12" outlined>
     <v-form ref="form" class="ml-4 mr-4 mt-4 mb-4" lazy-validation>
       <v-row>
         <v-col cols="12" md="6" sm="12">
@@ -170,6 +170,11 @@
       <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
+  <v-row v-else>
+    <v-col class="d-flex justify-center mt-12">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -187,6 +192,7 @@ export default {
   data() {
     return {
       valid: false,
+      isLoading: true,
       isFeatchingAddress: false,
       idFetchingBusiness: false,
       isSubmitting: false,
@@ -398,6 +404,7 @@ export default {
   async mounted() {
     this.allStates = await this.getAllStatesFormattedAsync()
     await this.getDataFromStoreAsync()
+    setTimeout(() => (this.isLoading = false), 1500)
   },
   methods: {
     cancelForm() {
@@ -407,13 +414,15 @@ export default {
       this.$store.commit('updateExporterRegistrationCancelDialog', false)
     },
     async getDataFromStoreAsync() {
-      const businessData = this.$store.state.businessRegistration
+      const businessData = this.$store.state.businessRegistration?.company_info
+      if (businessData?.cnpj) this.form.cnpj.value = businessData.cnpj
       if (businessData?.razao_social)
         this.form.name.value = businessData.razao_social
       if (businessData?.nome_fantasia)
         this.form.nick.value = businessData.nome_fantasia
       if (businessData?.cnae_fiscal)
         this.form.cnae.value = businessData.cnae_fiscal
+      if (businessData?.porte) this.form.porte.value = businessData.porte
       this.idFetchingBusiness = false
       if (businessData?.zipcode) {
         this.form.address.zipcode.value = businessData.zipcode
@@ -477,7 +486,10 @@ export default {
 
       this.isSubmitting = true
 
-      this.$store.commit('updateBusinessRegistration', this.getDataToSubmit())
+      this.$store.commit(
+        'updateBusinessRegistrationCompany',
+        this.getDataToSubmit()
+      )
       this.$store.commit('updateRegistrationStep', 2)
 
       this.isSubmitting = false
@@ -488,6 +500,7 @@ export default {
         razao_social: this.form.name.value,
         nome_fantasia: this.form.nick.value,
         cnae_fiscal: this.form.cnae.value,
+        porte: this.form.porte.value,
         zipcode: removeMask(this.form.address.zipcode.value),
         neighborhood: this.form.address.neighborhood.value,
         street: this.form.address.street.value,

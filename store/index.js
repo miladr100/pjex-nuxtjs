@@ -18,18 +18,21 @@ export const state = () => ({
   },
 
   businessRegistration: {
-    cnpj: '',
-    razao_social: '',
-    nome_fantasia: '',
-    cnae_fiscal: '',
-    zipcode: '',
-    neighborhood: '',
-    street: '',
-    state: '',
-    city: '',
-    number: '',
-    complement: '',
-    about: {},
+    company_info: {
+      cnpj: '',
+      razao_social: '',
+      nome_fantasia: '',
+      cnae_fiscal: '',
+      porte: '',
+      zipcode: '',
+      neighborhood: '',
+      street: '',
+      state: '',
+      city: '',
+      number: '',
+      complement: '',
+    },
+    about_company: {},
     exportation_info: {},
   },
 
@@ -41,8 +44,8 @@ export const mutations = {
     (state.userRegistration = payload),
   updateRegistrationStep: (state, payload) =>
     (state.registrationStep = payload),
-  updateBusinessRegistration: (state, payload) =>
-    (state.businessRegistration = payload),
+  updateBusinessRegistrationCompany: (state, payload) =>
+    (state.businessRegistration.company_info = payload),
   updateBusinessRegistrationAbout: (state, payload) =>
     (state.businessRegistration.about = payload),
   updateBusinessRegistrationExportationInfo: (state, payload) =>

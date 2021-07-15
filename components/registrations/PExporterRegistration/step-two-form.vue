@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="3" class="mb-12" outlined>
+  <v-card v-if="!isLoading" elevation="3" class="mb-12" outlined>
     <v-form ref="form" class="ml-4 mr-4 mt-4 mb-4" lazy-validation>
       <v-row>
         <v-col>
@@ -69,6 +69,11 @@
       <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
+  <v-row v-else>
+    <v-col class="d-flex justify-center mt-12">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -85,6 +90,7 @@ export default {
   data() {
     return {
       isSubmitting: false,
+      isLoading: true,
       billingRange: [
         'MICRO – Até R$ 433.755,14 ',
         'PEQUENA – De R$ 433.755,14 a R$ 2.133.222,00 ',
@@ -198,6 +204,8 @@ export default {
   },
   mounted() {
     this.allSectors = setoresDeAtuacao
+    this.getDataFromStore()
+    setTimeout(() => (this.isLoading = false), 1500)
   },
   methods: {
     cancelForm() {
@@ -205,6 +213,20 @@ export default {
     },
     returnToForm() {
       this.$store.commit('updateExporterRegistrationCancelDialog', false)
+    },
+    getDataFromStore() {
+      const companyAbout = this.$store.state.businessRegistration?.about_company
+      if (companyAbout) {
+        if (companyAbout?.foundation)
+          this.form.foundation.value = companyAbout.foundation
+        if (companyAbout?.employees)
+          this.form.employees.value = companyAbout.employees
+        if (companyAbout?.billing)
+          this.form.billing.value = companyAbout.billing
+        if (companyAbout?.sector) this.form.sector.value = companyAbout.sector
+        if (companyAbout?.subsector)
+          this.form.subsector.value = companyAbout.subsector
+      }
     },
     handleSubmit() {
       this.$v.$touch()

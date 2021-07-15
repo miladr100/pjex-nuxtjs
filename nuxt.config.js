@@ -100,7 +100,11 @@ export default {
   // css: ['font-awesome/css/font-awesome.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/vueMask.js', '~/plugins/vueToastNotification.js'],
+  plugins: [
+    '~/plugins/vueMask.js',
+    '~/plugins/vueToastNotification.js',
+    { src: '~/plugins/vuex-persist', ssr: false },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
