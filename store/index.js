@@ -1,5 +1,6 @@
 export const state = () => ({
   exporterRegistrationCancelDialog: false,
+  isCompanyRegistered: false,
 
   userRegistration: {
     nationality: '',
@@ -44,6 +45,8 @@ export const mutations = {
     (state.userRegistration = payload),
   updateRegistrationStep: (state, payload) =>
     (state.registrationStep = payload),
+  updateBusinessRegistration: (state, payload) =>
+    (state.businessRegistration = payload),
   updateBusinessRegistrationCompany: (state, payload) =>
     (state.businessRegistration.company_info = payload),
   updateBusinessRegistrationAbout: (state, payload) =>
@@ -53,7 +56,7 @@ export const mutations = {
   updateExporterRegistrationCancelDialog: (state, payload) =>
     (state.exporterRegistrationCancelDialog = payload),
   updateIsCompanyRegistered: (state, payload) =>
-    (state.userRegistration.is_company_registered = payload),
+    (state.isCompanyRegistered = payload),
 }
 
 export const actions = {
@@ -61,6 +64,15 @@ export const actions = {
     const endpoint = `/users/register/${this.$auth.user.id}`
     const userRegister = await this.$axios.$get(endpoint)
     commit('updateUserRegistration', userRegister)
+  },
+  resetAllStore({ commit }) {
+    commit('updateUserRegistration', {})
+    commit('updateBusinessRegistration', {
+      company_info: {},
+      about_company: {},
+      exportation_info: {},
+    })
+    commit('updateIsCompanyRegistered', false)
   },
 }
 

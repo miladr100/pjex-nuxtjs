@@ -153,10 +153,10 @@ export default {
   },
   computed: {
     firstUserName() {
-      return this.$auth.user.name.split(' ')[0]
+      return this.$auth?.user?.name ? this.$auth.user.name.split(' ')[0] : ''
     },
     dialog() {
-      return !this.$store.state.userRegistration?.is_company_registered
+      return !this.$store.state.isCompanyRegistered
     },
     screenWidth() {
       return this.$vuetify.breakpoint.width
@@ -181,6 +181,7 @@ export default {
   },
   methods: {
     async logoutUserAsync() {
+      this.$store.dispatch('resetAllStore')
       await this.$auth.logout()
     },
     registerBusiness() {

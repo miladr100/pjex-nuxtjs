@@ -398,7 +398,6 @@ export default {
         this.loginForm.userEmail.value,
         this.loginForm.userPassword.value
       )
-      this.$store.dispatch('getAndSetUserRegistrationAsync')
     },
 
     async registerNewUserAsync() {

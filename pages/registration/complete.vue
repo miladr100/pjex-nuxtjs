@@ -29,7 +29,9 @@ export default {
       mounted: false,
     }
   },
-  mounted() {
+  async mounted() {
+    await this.$store.dispatch('getAndSetUserRegistrationAsync')
+
     if (this.$store.getters.isThereUserRegistration) {
       this.$router.push('/dashboard')
       return

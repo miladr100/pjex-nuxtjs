@@ -17,6 +17,6 @@ export default {
     PToolbar,
     PFooter,
   },
-  middleware: ['auth'],
+  middleware: ['auth', 'complete-registration'],
 }
 </script>

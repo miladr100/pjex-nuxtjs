@@ -9,5 +9,8 @@ export default {
   components: {
     PLogin,
   },
+  mounted() {
+    this.$store.dispatch('resetAllStore')
+  },
 }
 </script>
