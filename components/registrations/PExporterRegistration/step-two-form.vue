@@ -217,15 +217,16 @@ export default {
     getDataFromStore() {
       const companyAbout = this.$store.state.businessRegistration?.about_company
       if (companyAbout) {
-        if (companyAbout?.foundation)
-          this.form.foundation.value = companyAbout.foundation
-        if (companyAbout?.employees)
-          this.form.employees.value = companyAbout.employees
-        if (companyAbout?.billing)
-          this.form.billing.value = companyAbout.billing
-        if (companyAbout?.sector) this.form.sector.value = companyAbout.sector
-        if (companyAbout?.subsector)
-          this.form.subsector.value = companyAbout.subsector
+        if (companyAbout?.fundacao)
+          this.form.foundation.value = companyAbout.fundacao
+        if (companyAbout?.quantidade_funcionarios)
+          this.form.employees.value = companyAbout.quantidade_funcionarios
+        if (companyAbout?.faixa_faturamento)
+          this.form.billing.value = companyAbout.faixa_faturamento
+        if (companyAbout?.setor_atuacao)
+          this.form.sector.value = companyAbout.setor_atuacao
+        if (companyAbout?.subsetor_atuacao)
+          this.form.subsector.value = companyAbout.subsetor_atuacao
       }
     },
     handleSubmit() {

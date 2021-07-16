@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="3" class="mb-12" outlined>
+  <v-card v-if="!isLoading" elevation="3" class="mb-12" outlined>
     <v-form ref="form" class="ml-4 mr-4 mt-4 mb-4" lazy-validation>
       <v-row>
         <v-col cols="12" md="6" sm="12">
@@ -164,6 +164,11 @@
       <v-btn text @click="cancelForm()"> Cancelar </v-btn>
     </v-card-actions>
   </v-card>
+  <v-row v-else>
+    <v-col class="d-flex justify-center mt-12">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -174,6 +179,7 @@ export default {
   data() {
     return {
       isSubmitting: false,
+      isLoading: true,
       yesOrNo: ['Sim', 'Não'],
       yearOrMonth: ['Anos', 'Meses'],
       typeOfBase: [
@@ -265,12 +271,103 @@ export default {
       },
     }
   },
+  mounted() {
+    this.getDataFromStore()
+    setTimeout(() => (this.isLoading = false), 1500)
+  },
   methods: {
     cancelForm() {
       this.$store.commit('updateExporterRegistrationCancelDialog', true)
     },
     returnToForm() {
       this.$store.commit('updateExporterRegistrationCancelDialog', false)
+    },
+    getDataFromStore() {
+      const exportationInfo =
+        this.$store.state.businessRegistration?.exportation_info
+      if (exportationInfo) {
+        if (
+          exportationInfo?.exportador === false ||
+          exportationInfo?.exportador === true
+        )
+          this.form.alreadyExport.value = this.boolYesOrNo(
+            exportationInfo?.exportador
+          )
+        if (exportationInfo?.tempo_exportador) {
+          const timeExporting = exportationInfo?.tempo_exportador.split('/')
+          this.form.timeExporting.value = timeExporting[0]
+          this.form.time = timeExporting[1]
+        }
+        if (
+          exportationInfo?.exportador_recorrente === false ||
+          exportationInfo?.exportador_recorrente === true
+        )
+          this.form.frequentlyExporting.value = this.boolYesOrNo(
+            exportationInfo?.exportador_recorrente
+          )
+        if (exportationInfo?.valor_exportacoes)
+          this.form.valueExporting.value = exportationInfo?.valor_exportacoes
+        if (
+          exportationInfo?.base_exterior === false ||
+          exportationInfo?.base_exterior === true
+        )
+          this.form.baseAbroad.value = this.boolYesOrNo(
+            exportationInfo?.base_exterior
+          )
+        if (exportationInfo?.tipo_base)
+          this.form.witchBase.value = exportationInfo?.tipo_base
+        if (
+          exportationInfo?.protocolo_rastreabilidade === false ||
+          exportationInfo?.protocolo_rastreabilidade === true
+        )
+          this.form.rastreability.value = this.boolYesOrNo(
+            exportationInfo?.protocolo_rastreabilidade
+          )
+        if (
+          exportationInfo?.certificacao === false ||
+          exportationInfo?.certificacao === true
+        )
+          this.form.certification.value = this.boolYesOrNo(
+            exportationInfo?.certificacao
+          )
+        if (exportationInfo?.certificacoes)
+          this.form.witchCertification.value = exportationInfo?.certificacoes
+        if (
+          exportationInfo?.certificacao_exigencia_internacional === false ||
+          exportationInfo?.certificacao_exigencia_internacional === true
+        )
+          this.form.needCertificationAbroad.value = this.boolYesOrNo(
+            exportationInfo?.certificacao_exigencia_internacional
+          )
+        if (
+          exportationInfo?.acessoria_contabil === false ||
+          exportationInfo?.acessoria_contabil === true
+        )
+          this.form.contabilHelp.value = this.boolYesOrNo(
+            exportationInfo?.acessoria_contabil
+          )
+        if (
+          exportationInfo?.acessoria_juridica === false ||
+          exportationInfo?.acessoria_juridica === true
+        )
+          this.form.loyalHelp.value = this.boolYesOrNo(
+            exportationInfo?.acessoria_juridica
+          )
+        if (
+          exportationInfo?.fechamento_cambio === false ||
+          exportationInfo?.fechamento_cambio === true
+        )
+          this.form.exchange.value = this.boolYesOrNo(
+            exportationInfo?.fechamento_cambio
+          )
+        if (
+          exportationInfo?.agente_aduaneiro === false ||
+          exportationInfo?.agente_aduaneiro === true
+        )
+          this.form.logisticManager.value = this.boolYesOrNo(
+            exportationInfo?.agente_aduaneiro
+          )
+      }
     },
     handleSubmit() {
       this.isSubmitting = true
@@ -282,12 +379,19 @@ export default {
       this.isSubmitting = false
     },
     trueOrFase(text) {
+      if (!text) return null
       return text === 'Sim'
     },
+    boolYesOrNo(bool) {
+      return bool ? 'Sim' : 'Não'
+    },
     getDataToSubmit() {
+      let timeExporting = ''
+      if (this.form.timeExporting.value)
+        timeExporting = this.form.timeExporting.value + '/' + this.form.time
       return {
         exportador: this.trueOrFase(this.form.alreadyExport.value),
-        tempo_exportador: this.form.timeExporting.value + '/' + this.form.time,
+        tempo_exportador: timeExporting,
         exportador_recorrente: this.trueOrFase(
           this.form.frequentlyExporting.value
         ),

@@ -470,7 +470,9 @@ export default {
     },
     async setBusinesInfoAsync() {
       this.idFetchingBusiness = true
-      const infos = await this.getBusinessByCnpj(this.form.cnpj.value)
+      const infos = await this.getBusinessByCnpj(
+        removeMask(this.form.cnpj.value)
+      )
       if (infos.razao_social) this.form.name.value = infos.razao_social
       if (infos.nome_fantasia) this.form.nick.value = infos.nome_fantasia
       if (infos.cnae_fiscal) this.form.cnae.value = infos.cnae_fiscal
