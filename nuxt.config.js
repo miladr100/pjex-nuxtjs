@@ -129,7 +129,7 @@ export default {
   env: {
     brasilApi: 'https://brasilapi.com.br/api/',
     ibgeApi: 'https://servicodados.ibge.gov.br/api/v1/',
-    pjexApiProd: 'https://hk-pjex-api-prod.herokuapp.com/api/',
+    pjexApiProd: 'https://pjex-api-prod.herokuapp.com/api/',
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

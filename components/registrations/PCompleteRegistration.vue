@@ -495,6 +495,7 @@ export default {
         const endpoint = `/users/register/${this.$auth.user.id}`
         await this.$axios.post(endpoint, this.mountPaylodToSubmit())
         this.$store.commit('updateUserRegistration', this.mountPaylodToSubmit())
+        this.$store.commit('updateIsUserRegistered', true)
         this.$toast.open({
           message: 'Dados salvos com sucesso!',
           type: 'success',

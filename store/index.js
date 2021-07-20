@@ -1,6 +1,7 @@
 export const state = () => ({
   exporterRegistrationCancelDialog: false,
   isCompanyRegistered: false,
+  isUserRegistered: false,
 
   userRegistration: {
     nationality: '',
@@ -57,6 +58,8 @@ export const mutations = {
     (state.exporterRegistrationCancelDialog = payload),
   updateIsCompanyRegistered: (state, payload) =>
     (state.isCompanyRegistered = payload),
+  updateIsUserRegistered: (state, payload) =>
+    (state.isUserRegistered = payload),
 }
 
 export const actions = {
@@ -72,14 +75,16 @@ export const actions = {
       about_company: {},
       exportation_info: {},
     })
-    commit('updateIsCompanyRegistered', false)
   },
 }
 
 export const getters = {
   isThereUserRegistration: (state) => {
-    if (state.userRegistration.birthdate && state.userRegistration.zipcode)
-      return true
+    return state.isUserRegistered
+  },
+
+  isThereCompanyRegistration: (state) => {
+    if (this?.$auth?.user?.company_registration) return true
     return false
   },
 }

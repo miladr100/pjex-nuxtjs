@@ -381,11 +381,19 @@ export default {
             password: userPassword,
           },
         })
+        this.$store.commit(
+          'updateIsUserRegistered',
+          this.$auth.user.user_registration
+        )
+        this.$store.commit(
+          'updateIsCompanyRegistered',
+          this.$auth.user.company_registration
+        )
         this.$router.push('/dashboard')
       } catch (err) {
         this.loadingNextScreen = false
         this.isLoading = false
-        this.showToastMessage(err.response.data.message, 'error')
+        this.showToastMessage(err?.response?.data?.message, 'error')
       }
     },
 

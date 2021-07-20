@@ -1,7 +1,7 @@
 <template>
   <v-container class="mt-14 mb-4">
     <v-row v-if="!isLoading" justify="center">
-      <v-col cols="12" md="10">
+      <v-col cols="12" md="8">
         <ui-material-card>
           <template #heading>
             <div class="text-h3 font-weight-light">Editar perfil</div>
@@ -12,10 +12,6 @@
           <v-form>
             <v-container class="py-0">
               <v-row>
-                <v-col cols="12" md="4">
-                  <v-text-field label="Company (disabled)" disabled />
-                </v-col>
-
                 <v-col cols="12" md="4">
                   <v-text-field class="purple-input" label="User Name" />
                 </v-col>
@@ -71,28 +67,27 @@
         </ui-material-card>
       </v-col>
 
-      <!-- <v-col cols="12" md="4">
+      <v-col cols="12" md="4">
         <ui-material-card
           class="v-card-profile"
           avatar="https://demos.creative-tim.com/vue-material-dashboard/img/marc.aba54d65.jpg"
         >
           <v-card-text class="text-center">
-            <h6 class="display-1 mb-1 grey--text">CEO / CO-FOUNDER</h6>
+            <h6 class="text-h5 mb-1 grey--text">CEO / CO-FOUNDER</h6>
 
-            <h4 class="display-2 font-weight-light mb-3 black--text">
+            <h4 class="text-h4 font-weight-light mb-3 black--text">
               Alec Thompson
             </h4>
 
             <p class="font-weight-light grey--text">
               Don't be scared of the truth because we need to restart the human
-              foundation in truth And I love you like Kanye loves Kanye I love
-              Rick Owens’ bed design but the back is...
+              foundation in truth.
             </p>
 
-            <v-btn color="success" rounded class="mr-0"> Follow </v-btn>
+            <!-- <v-btn color="success" rounded class="mr-0"> Follow </v-btn> -->
           </v-card-text>
         </ui-material-card>
-      </v-col> -->
+      </v-col>
     </v-row>
     <v-row v-else>
       <v-col class="d-flex justify-center mt-12">
@@ -330,7 +325,7 @@ export default {
   async mounted() {
     this.allStates = await this.getAllStatesFormattedAsync()
     await this.getDataFromStoreAsync()
-    setTimeout(() => (this.isLoading = false), 1500)
+    setTimeout(() => (this.isLoading = false), 200)
   },
   methods: {
     async getDataFromStoreAsync() {

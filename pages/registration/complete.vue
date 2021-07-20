@@ -15,24 +15,19 @@ export default {
   },
   middleware: ['auth'],
   async asyncData({ $axios }) {
-    try {
-      const allStatesOfBrazil = await $axios.$get(
-        `${process.env.brasilApi}ibge/uf/v1`
-      )
-      return { allStatesOfBrazil }
-    } catch (err) {
-      console.error(err)
-    }
+    const allStatesOfBrazil = await $axios.$get(
+      `${process.env.brasilApi}ibge/uf/v1`
+    )
+    return { allStatesOfBrazil }
   },
   data() {
     return {
       mounted: false,
     }
   },
-  async mounted() {
-    await this.$store.dispatch('getAndSetUserRegistrationAsync')
-
+  mounted() {
     if (this.$store.getters.isThereUserRegistration) {
+      this.$store.dispatch('getAndSetUserRegistrationAsync')
       this.$router.push('/dashboard')
       return
     }

@@ -404,7 +404,7 @@ export default {
   async mounted() {
     this.allStates = await this.getAllStatesFormattedAsync()
     await this.getDataFromStoreAsync()
-    setTimeout(() => (this.isLoading = false), 1500)
+    setTimeout(() => (this.isLoading = false), 300)
   },
   methods: {
     cancelForm() {
